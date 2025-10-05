@@ -33,16 +33,16 @@ vim.opt.shortmess:append('I')
 
 
 -- Colors and Appearance
-vim.cmd.colorscheme('shine')
 vim.cmd('filetype indent on')
 
 -- Override Styling
 vim.api.nvim_set_hl(0, 'Comment', { italic = true })
 
 -- Italicize String Literals
-local string_hl = vim.api.nvim_get_hl(0, { name = "String", link = false })
+local string_hl = vim.api.nvim_get_hl(0, { name = 'String', link = false })
 string_hl.italic = true
-vim.api.nvim_set_hl(0, "String", string_hl)
+string_hl.fg = '#808080'
+vim.api.nvim_set_hl(0, 'String', string_hl)
 
 -- Environment Variables (FZF)
 vim.env.FZF_DEFAULT_COMMAND = table.concat({

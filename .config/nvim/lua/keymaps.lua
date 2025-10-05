@@ -79,3 +79,8 @@ keymap('n', 'K', vim.lsp.buf.hover, opts) -- Symbol Definition
 -- Formatting
 -- Prettier
 keymap('n', '<leader>fp', helpers.format_with_prettier, opts)
+
+-- Copy Relative Path of Active Buffer to Clipboard
+keymap('n', '<leader>cr', function()
+  vim.fn.setreg('+', vim.fn.expand('%'))
+end)

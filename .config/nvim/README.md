@@ -91,3 +91,8 @@ This is my Neovim configuration. I'm a minimalist, and hence I've written all th
 *Note: Resize key-mappings (`<C-H>`, `<C-L>`, etc.) are currently commented out due to conflict with window focus controls.*
 
 This configuration offers a productive foundation for daily usage and development across languages.
+
+## Important
+
+There are some weird things that I want you to remember when working with this configuration:
+1. The `PythonPyrightSetInterpreterPath {path}` works only when you have at least one buffer opened and attached to the LSP. Please do not invoke it without this as it'll not work.
