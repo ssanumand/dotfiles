@@ -31,7 +31,6 @@ vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'popup' }
 -- Short Messages
 vim.opt.shortmess:append('I')
 
-
 -- Colors and Appearance
 vim.cmd('filetype indent on')
 

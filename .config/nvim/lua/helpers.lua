@@ -29,36 +29,4 @@ function M.format_with_prettier()
   end
 end
 
--- Buffer Management
-local function listed_buffers()
-  return vim.tbl_filter(function(buf)
-    return vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted
-  end, vim.api.nvim_list_bufs())
-end
-
-local function close_buffer(buf)
-  if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
-    if vim.bo[buf].modified then
-      vim.notify('Unsaved: ' .. buf .. '; Skipping', vim.log.levels.WARN)
-      return
-    end
-    vim.cmd('bdelete ' .. buf)
-  end
-end
-
--- Close All (except the current one)
-function M.close_other_buffers()
-  local current = vim.api.nvim_get_current_buf()
-  for _, buf in ipairs(listed_buffers()) do
-    if buf ~= current then close_buffer(buf) end
-  end
-end
-
--- Close All
-function M.close_all_buffers()
-  for _, buf in ipairs(listed_buffers()) do
-    close_buffer(buf)
-  end
-end
-
 return M

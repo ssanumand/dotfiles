@@ -17,12 +17,9 @@ This is my Neovim configuration. I'm a minimalist, and hence I've written all th
 | ---- | ------------- | -------------------------------------------------------- |
 | n    | `<leader>en`  | Open netrw file explorer.                                |
 | n    | `<leader>ef`  | Launch FZF file search.                                  |
-| n    | `<leader>r`   | Open a global substitution prompt.                       |
-| n    | `<leader>bl`  | List open buffers.                                       |
+| n    | `<leader>r`   | Open a global substitution prompt (doubles down as document-level symbol replace). |
 | n    | `<Tab>`       | Switch to the next buffer.                               |
 | n    | `<S-Tab>`     | Switch to the previous buffer.                           |
-| n    | `<leader>bda` | Close all buffers using a helper.                        |
-| n    | `<leader>bdo` | Close all buffers except the current one using a helper. |
 | n    | `<leader>t`   | Open a new tab.                                          |
 | n    | `<leader>td`  | Close the current tab.                                   |
 | n    | `<leader>tp`  | Go to the previous tab.                                  |
@@ -37,16 +34,22 @@ This is my Neovim configuration. I'm a minimalist, and hence I've written all th
 | n    | `<leader>lc`  | Close the location list.                                 |
 | n    | `[d`          | Jump to the previous diagnostic.                         |
 | n    | `]d`          | Jump to the next diagnostic.                             |
+| n    | `<leader>[q`  | Jump to the previous item in the quickfix list.          |
+| n    | `<leader>]q`  | Jump to the next item in the quickfix list.              |
+| n    | `<leader>[l`  | Jump to the previous item in the location list.          |
+| n    | `<leader>]l`  | Jump to the next item in the location list.              |
 | n    | `<leader>dl`  | Add diagnostics to the location list.                    |
-| n    | `<leader>f`   | Format the current buffer using LSP.                     |
+| n    | `<leader>fl`  | Format the current buffer using LSP.                     |
 | n    | `gd`          | Go to the definition.                                    |
 | n    | `gD`          | Go to the declaration.                                   |
 | n    | `go`          | Go to the type definition.                               |
-| n    | `gr`          | Show references.                                         |
+| n    | `gO`          | List all document symbols.                               |
+| n    | `grr`         | Show references within document.                         |
+| n    | `grn`         | Rename the symbol under the cursor at **workspace** level. |
 | n    | `gi`          | Go to the implementation.                                |
 | n    | `gS`          | Search for symbols in the workspace.                     |
-| n    | `K`           | Show hover information for the symbol.                   |
-| n    | `<leader>fp`  | Format using Prettier via helper.                        |
+| n    | `K`           | Show information for the symbol in a popup.              |
+| n    | `<leader>fp`  | Format using Prettier.                                   |
 
 ---
 
@@ -77,7 +80,6 @@ This is my Neovim configuration. I'm a minimalist, and hence I've written all th
 | Trigger    | Pattern(s)                   | Effect                                          |
 | ---------- | ---------------------------- | ----------------------------------------------- |
 | `FileType` | `yaml`, `lua`, `html`, `hcl` | Set indentation width to 2 spaces.              |
-| `FileType` | `markdown`                   | Disable word wrapping.                          |
 | `FileType` | `go`                         | Set indentation width to 4 spaces and use tabs. |
 
 ### LSP Auto-commands
@@ -88,7 +90,9 @@ This is my Neovim configuration. I'm a minimalist, and hence I've written all th
 
 ---
 
-*Note: Resize key-mappings (`<C-H>`, `<C-L>`, etc.) are currently commented out due to conflict with window focus controls.*
+## Mouse
+
+I don't use the mouch much (apparent), except for resizing windows. Drag the borders to resize.
 
 This configuration offers a productive foundation for daily usage and development across languages.
 
