@@ -2,6 +2,8 @@
 -- Created on: 29/03/2025
 --
 -- Global Commands
+local helpers = require('helpers')
+
 vim.api.nvim_create_user_command('ApacheX692', function()
   local art = [[
     ___    ____  ___   ________  ________   _  _______ ____ ___
@@ -17,3 +19,7 @@ vim.api.nvim_create_user_command('ApacheX692', function()
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(art, '\n'))
   vim.api.nvim_win_set_buf(0, buf)
 end, {})
+
+vim.api.nvim_create_user_command('RefreshFzfCache', function()
+  helpers.ensure_fd_cache({ force = true })
+end, { desc = 'Regenerate Cached fd Results for FZF' })

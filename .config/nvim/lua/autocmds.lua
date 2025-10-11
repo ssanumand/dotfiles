@@ -2,7 +2,16 @@
 -- Created on: 29/03/2025
 --
 -- Global Auto Commands
+local helpers = require('helpers')
+
 local augroup = vim.api.nvim_create_augroup('ApacheX692Config', { clear = true })
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  group = augroup,
+  callback = function()
+    helpers.ensure_fd_cache({ silent = true })
+  end
+})
 
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup,

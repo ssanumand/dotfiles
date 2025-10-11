@@ -52,6 +52,10 @@ keymap('n', '<leader>dl', vim.diagnostic.setloclist, opts)
 keymap('n', 'gS', ':lua vim.lsp.buf.workspace_symbol("")<Left><Left>', { noremap = true }) -- Workspace Symbols
 keymap('n', 'K', vim.lsp.buf.hover, opts) -- Symbol Definition
 
+-- LSP Commands: Definition and Declarations
+keymap('n', 'gd', vim.lsp.buf.definition, opts)
+keymap('n', 'gD', vim.lsp.buf.declaration, opts)
+
 -- LSP Commands: Formatting
 keymap('n', '<leader>fl', vim.lsp.buf.format, opts) -- LSP Formatting
 keymap('n', '<leader>fp', helpers.format_with_prettier, opts)

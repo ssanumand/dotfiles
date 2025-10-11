@@ -1,6 +1,8 @@
 -- Author: Apache X692
 -- Created on: 29/03/2025
 
+local helpers = require('helpers')
+
 -- netrw Behavior
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
@@ -44,18 +46,10 @@ string_hl.fg = '#808080'
 vim.api.nvim_set_hl(0, 'String', string_hl)
 
 -- Environment Variables (FZF)
-vim.env.FZF_DEFAULT_COMMAND = table.concat({
-    'find . -type f',
-    '! -path "./.git/*"',
-    '! -path "./node_modules/*"',
-    '! -path "./venv/*"',
-    '! -path "./.venv/*"',
-    '! -path "./.idea/*"',
-    '! -path "./.env/*"',
-    '! -path "*/__pycache__/*"',
-    '! -name "*.log"',
-    '! -name "*.pyc"',
-    '! -name "*.pyo"',
-    '! -name "*.out"',
-}, ' ')
+local fd_cache_path = helpers.ensure_fd_cache({ silent = true })
+if fd_cache_path then
+    vim.env.FZF_DEFAULT_COMMAND = 'cat ' .. vim.fn.shellescape(fd_cache_path)
+else
+    vim.env.FZF_DEFAULT_COMMAND = helpers.get_fd_command_string()
+end
 vim.g.fzf_action = { ['enter'] = 'edit' }
