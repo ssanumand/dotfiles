@@ -1,29 +1,71 @@
-
 -- Author: Apache X692
 -- Created on: 29/03/2025
 --
 -- Global Helpers
 local M = {}
 
-local FD_ARGS = {
-  "fd",
-  "--type=f",
-  "--hidden",
-  "--strip-cwd-prefix",
-  "--color=never",
-  "--exclude=.uv_cache",
-  "--exclude=.git",
-  "--exclude=node_modules",
-  "--exclude=venv",
-  "--exclude=.venv",
-  "--exclude=.idea",
-  "--exclude=.env",
-  "--exclude=__pycache__",
-  "--exclude=*.log",
-  "--exclude=*.pyc",
-  "--exclude=*.pyo",
-  "--exclude=*.out",
+local EXCLUDE_PATTERNS = {
+  '.uv_cache',
+  '.git',
+  'node_modules',
+  'venv',
+  '.venv',
+  '.idea',
+  '.env',
+  '__pycache__',
+  '*.log',
+  '*.pyc',
+  '*.pyo',
+  '*.out',
 }
+
+local function build_fd_args()
+  local args = {
+    'fd',
+    '--type=f',
+    '--hidden',
+    '--strip-cwd-prefix',
+    '--color=never',
+  }
+
+  for _, pattern in ipairs(EXCLUDE_PATTERNS) do
+    table.insert(args, '--exclude=' .. pattern)
+  end
+
+  return args
+end
+
+local function build_rg_args(query)
+  local args = {
+    'rg',
+    '--vimgrep',
+    '--smart-case',
+    '--hidden',
+    '--color=never',
+  }
+
+  for _, pattern in ipairs(EXCLUDE_PATTERNS) do
+    table.insert(args, '--glob')
+    table.insert(args, '!' .. pattern)
+  end
+
+  table.insert(args, query)
+  table.insert(args, '.')
+
+  return args
+end
+
+local FD_ARGS = build_fd_args()
+
+local function shell_join(args)
+  local escaped = {}
+
+  for _, arg in ipairs(args) do
+    table.insert(escaped, vim.fn.shellescape(arg))
+  end
+
+  return table.concat(escaped, ' ')
+end
 
 local function fd_cache_dir()
   return vim.fs.joinpath(vim.fn.stdpath('state'), 'fd')
@@ -43,6 +85,57 @@ end
 
 function M.get_fd_command_args()
   return vim.deepcopy(FD_ARGS)
+end
+
+function M.get_fd_command_string()
+  return shell_join(M.get_fd_command_args())
+end
+
+function M.workspace_search()
+  if vim.fn.executable('rg') == 0 then
+    vim.notify('Not Found: ripgrep', vim.log.levels.ERROR)
+    return
+  end
+
+  local query = vim.fn.input('Workspace Search: ')
+  if not query or query == '' then
+    vim.notify('Search Cancelled', vim.log.levels.INFO)
+    return
+  end
+
+  local args = build_rg_args(query)
+  local output = vim.fn.systemlist(args)
+  local shell_error = vim.v.shell_error
+
+  if shell_error > 1 then
+    vim.notify('ripgrep Failed:\n' .. table.concat(output, '\n'), vim.log.levels.ERROR)
+    return
+  end
+
+  local items = {}
+  for _, line in ipairs(output) do
+    local filename, lnum, col, text = line:match('^(.-):(%d+):(%d+):(.*)$')
+    if filename then
+      table.insert(items, {
+        filename = filename,
+        lnum = tonumber(lnum),
+        col = tonumber(col),
+        text = text,
+      })
+    end
+  end
+
+  if #items == 0 then
+    vim.notify('No Workspace Matches', vim.log.levels.INFO)
+    vim.cmd('cclose')
+    return
+  end
+
+  vim.fn.setqflist({}, ' ', {
+    title = 'Workspace Search: ' .. query,
+    items = items,
+  })
+  vim.cmd('copen')
 end
 
 local function write_cache(lines, path)
@@ -97,23 +190,23 @@ function M.format_with_prettier()
   local buf = vim.api.nvim_get_current_buf()
   local filepath = vim.api.nvim_buf_get_name(buf)
 
-  if filepath == "" then
-    vim.notify("Invalid File Path", vim.log.levels.ERROR)
+  if filepath == '' then
+    vim.notify('Invalid File Path', vim.log.levels.ERROR)
     return
   end
 
   if vim.bo.modified then
-    vim.notify("Save File (before formatting)", vim.log.levels.WARN)
+    vim.notify('Save File (before formatting)', vim.log.levels.WARN)
     return
   end
 
-  local result = vim.fn.system({ "prettier", "--write", filepath })
+  local result = vim.fn.system({ 'prettier', '--write', filepath })
   if vim.v.shell_error ~= 0 then
-    vim.notify("Prettier Failed:\n" .. result, vim.log.levels.ERROR)
+    vim.notify('Prettier Failed:\n' .. result, vim.log.levels.ERROR)
   else
-    vim.notify("Formatted with Prettier", vim.log.levels.INFO)
+    vim.notify('Formatted with Prettier', vim.log.levels.INFO)
     -- Reload File
-    vim.cmd("edit!")
+    vim.cmd('edit!')
   end
 end
 

@@ -33,17 +33,7 @@ vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'popup' }
 -- Short Messages
 vim.opt.shortmess:append('I')
 
--- Colors and Appearance
 vim.cmd('filetype indent on')
-
--- Override Styling
-vim.api.nvim_set_hl(0, 'Comment', { italic = true })
-
--- Italicize String Literals
-local string_hl = vim.api.nvim_get_hl(0, { name = 'String', link = false })
-string_hl.italic = true
-string_hl.fg = '#808080'
-vim.api.nvim_set_hl(0, 'String', string_hl)
 
 -- Environment Variables (FZF)
 local fd_cache_path = helpers.ensure_fd_cache({ silent = true })
@@ -53,3 +43,31 @@ else
     vim.env.FZF_DEFAULT_COMMAND = helpers.get_fd_command_string()
 end
 vim.g.fzf_action = { ['enter'] = 'edit' }
+
+-- nvim-treesitter
+require('nvim-treesitter.configs').setup {
+  ensure_installed = {
+    'python', 'lua', 'javascript', 'html', 'css',
+    'bash', 'json', 'yaml', 'markdown', 'go',
+  },
+  incremental_selection = { enable = false },
+  highlight = { enable = true },
+  additional_vim_regex_highlighting = false,
+}
+
+-- nvim-github-theme
+require('github-theme').setup({
+  options = {
+    transparent = true,
+    terminal_colors = true,
+    styles = {
+      comments = 'italic',
+      strings  = 'italic',
+      keywords = 'bold',
+      functions = 'NONE',
+      variables = 'NONE',
+    },
+    additional_vim_regex_highlighting = false,
+  }
+})
+vim.cmd('colorscheme github_light_default')

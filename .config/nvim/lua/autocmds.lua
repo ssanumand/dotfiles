@@ -24,14 +24,6 @@ vim.api.nvim_create_autocmd('FileType', {
 
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup,
-  pattern = { 'markdown' },
-  callback = function()
-    vim.opt_local.wrap = false
-  end
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  group = augroup,
   pattern = 'go',
   callback = function()
     vim.opt_local.expandtab = false

@@ -14,5 +14,6 @@ require('lsp.cmds')
 require('lsp.diagnostics')
 
 require('lsp.config.python')
+require('lsp.config.typescript')
 require('lsp.config.go')
 require('lsp.config.terraform')

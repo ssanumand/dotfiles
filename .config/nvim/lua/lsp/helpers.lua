@@ -41,14 +41,14 @@ function M.show_markdown_toc()
   local toc_items = {}
 
   for linenr, line in ipairs(lines) do
-    local hashes, text = line:match("^(#+)%s+(.*)")
+    local hashes, text = line:match('^(#+)%s+(.*)')
     if hashes and text then
       local level = #hashes
       table.insert(toc_items, {
         bufnr = bufnr,
         lnum = linenr,
         col = 1,
-        text = string.format("H%d %s", level, text),
+        text = string.format('H%d %s', level, text),
       })
     end
   end
@@ -63,7 +63,7 @@ function M.show_markdown_toc()
     items = toc_items,
   })
 
-  vim.cmd("lopen")
+  vim.cmd('lopen')
 end
 
 return M

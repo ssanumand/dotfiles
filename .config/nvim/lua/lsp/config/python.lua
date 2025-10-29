@@ -5,21 +5,15 @@
 -- Referenced from:
 -- 1. https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/pyright.lua
 -- 2. https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/ruff.lua
-local root_files = {
-  'pyproject.toml',
-  'setup.py',
-  'setup.cfg',
-  'requirements.txt',
-  'Pipfile',
-  'pyrightconfig.json',
-}
+local lsp_root = require('lsp.root')
+local python_root_dir = lsp_root.make_root_dir('python')
 
 -- Configuring LSPs
 -- https://docs.astral.sh/ruff/editors/settings
 vim.lsp.config['ruff'] = {
   cmd = { 'ruff', 'server' },
   filetypes = { 'python' },
-  root_markers = root_files,
+  root_dir = python_root_dir,
   init_options = {
     settings = {
       lineLength = 88,          -- Black
@@ -43,7 +37,7 @@ vim.lsp.config['ruff'] = {
 vim.lsp.config['pyright'] = {
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { 'python' },
-  root_markers = root_files,
+  root_dir = python_root_dir,
   settings = {
     pyright = {
       disableOrganizeImports = true,

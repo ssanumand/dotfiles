@@ -4,12 +4,12 @@
 -- LSP Configuration: Go
 -- Referenced from:
 -- 1. https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/pyright.lua
+local lsp_root = require('lsp.root')
+
 vim.lsp.config['gopls'] = {
   cmd = { 'gopls' },
   filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
-  root_markers = {
-    'go.mod',
-  },
+  root_dir = lsp_root.make_root_dir('go'),
 }
 
 -- Enable

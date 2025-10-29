@@ -38,11 +38,11 @@ vim.api.nvim_create_user_command(
   'LspEnable',
   function(opts)
     if vim.lsp.config[opts.args] == nil then
-      vim.notify("LSP Not Configured: " .. opts.args, vim.log.levels.ERROR)
+      vim.notify('LSP Not Configured: ' .. opts.args, vim.log.levels.ERROR)
       return
     end
 
-  vim.lsp.enable(opts.args)
+    vim.lsp.enable(opts.args)
   end,
   {
     nargs = 1,
