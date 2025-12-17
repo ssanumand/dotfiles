@@ -53,5 +53,5 @@ vim.lsp.config['pyright'] = {
 }
 
 -- Enable LSPs
--- vim.lsp.enable('ruff')
+vim.lsp.enable('ruff')
 -- vim.lsp.enable('pyright')

@@ -14,7 +14,7 @@ keymap('n', '<leader>en', '<cmd>Ex<CR>', opts)
 keymap('n', '<leader>ef', '<cmd>FZF<CR>', opts)
 
 -- File Operations
-keymap('n', '<leader>r', '<cmd>%s//g<Left><Left>', { noremap = true })
+keymap('n', '<leader>r', ':%s//g<Left><Left>', { noremap = true })
 keymap('n', '<leader>fw', helpers.workspace_search, opts)
 
 -- Buffer Management
@@ -54,7 +54,7 @@ keymap('n', ']d', vim.diagnostic.goto_next, opts)
 keymap('n', '<leader>dl', vim.diagnostic.setloclist, opts)
 
 -- LSP Commands
-keymap('n', 'gS', '<cmd>lua vim.lsp.buf.workspace_symbol("")<Left><Left>', { noremap = true }) -- Workspace Symbols
+keymap('n', 'gS', ':lua vim.lsp.buf.workspace_symbol("")<Left><Left>', { noremap = true }) -- Workspace Symbols
 
 -- LSP Commands: Definition and Declarations
 keymap('n', 'gd', vim.lsp.buf.definition, opts)
